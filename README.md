@@ -1,12 +1,63 @@
 # Create Project
+모든 소스관련된건 src에 우겨넣는다.
 ```bash
 $ npx create-next-app --example with-typescript graphql-nextjs-typescript
+$ mkdir src
+```
+
+# Add Storybook
+```bash
+$ npx sb init
+```
+## main.js
+```javascript
+module.exports = {
+  "stories": [
+    "../src/**/*.stories.mdx",
+    "../src/**/*.stories.@(js|jsx|ts|tsx)"
+  ],
+  "addons": [
+    "@storybook/addon-links",
+    "@storybook/addon-essentials",
+    "@storybook/addon-viewport",
+    "@storybook/preset-create-react-app"
+  ]
+}
+```
+## preview.js
+```jsx
+import React from 'react';
+import { ThemeProvider } from 'styled-components';
+import { theme } from '../src/styles/theme';
+import { GlobalStyle } from '../src/styles/GlobalStyles';
+
+export const parameters = {
+    actions: { argTypesRegex: '^on[A-Z].*' },
+    options: {
+        storySort: (a, b) =>
+            a[1].kind === b[1].kind ? 0 : a[1].id.localeCompare(b[1].id, undefined, { numeric: true }),
+    },
+};
+
+export const decorators = [
+    (Story) => (
+        <ThemeProvider theme={theme}>
+            <GlobalStyle />
+            <Story />
+        </ThemeProvider>
+    ),
+];
+
+```
+## Execute
+```bash
+$ yarn storybook
 ```
 
 # yarn add
 ## Dev Dependencies
 ```bash
-$ yarn add -D @graphql-codegen/cli @graphql-codegen/fragment-matcher @graphql-codegen/typescript @graphql-codegen/typescript-operations @graphql-codegen/typescript-react-apollo @types/graphql @types/node @types/react @types/react-dom @types/styled-components @typescript-eslint/eslint-plugin @typescript-eslint/parser babel-plugin-styled-components eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-react graphql-codegen-typescript-operations prettier typescript
+$ yarn add -D @storybook/addon-actions @storybook/addon-essentials @storybook/addon-links @storybook/addon-viewport @storybook/preset-create-react-app @storybook/react @graphql-codegen/cli @graphql-codegen/fragment-matcher @graphql-codegen/typescript @graphql-codegen/typescript-operations @graphql-codegen/typescript-react-apollo @types/graphql @types/node @types/react @types/react-dom @types/styled-components @typescript-eslint/eslint-plugin @typescript-eslint/parser babel-plugin-styled-components eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-react graphql-codegen-typescript-operations prettier typescript
 ```
 ## Dependencies
 ```bash
